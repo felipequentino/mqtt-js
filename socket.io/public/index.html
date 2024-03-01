@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Streaming</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        function base64ToArrayBuffer(base64) {
+            var binaryString = atob(base64);
+            var len = binaryString.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; ++i) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const socket = io();
+            console.log("teste1");
+            socket.on('image', function(imgBytes) {
+                console.log("teste2");
+                var blob = new Blob([imgBytes], { type: 'image/jpeg' });
+                imageUrl = URL.createObjectURL(blob);
+                document.getElementById('image').src = imageUrl;
+                console.log(imageUrl);
+            });
+        });
+    </script>
+</head>
+<body>
+    <img id="image" src="">
+</body>
+</html>
